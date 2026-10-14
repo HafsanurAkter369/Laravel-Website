@@ -105,6 +105,76 @@
             font-size: 27px;
         }
 
+        .filters {
+            margin-bottom: 28px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .search-form input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+            max-width: 420px;
+            padding: 12px 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            background: #fff;
+        }
+
+        .search-form button {
+            padding: 12px 22px;
+            border: none;
+            border-radius: 6px;
+            background: #222;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .search-form button:hover {
+            background: #a16b45;
+        }
+
+        .clear-link {
+            color: #98765b;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+
+        .chips {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 9px 18px;
+            border: 1px solid #ddd;
+            border-radius: 999px;
+            background: #fff;
+            color: #333;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .chip:hover {
+            border-color: #a16b45;
+            color: #a16b45;
+        }
+
+        .chip.active {
+            background: #222;
+            border-color: #222;
+            color: #fff;
+        }
+
         .products {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -238,6 +308,7 @@
         <nav>
             <a href="/">Home</a>
             <a href="#products">Shop</a>
+            <a href="/cart">Cart</a>
             <a href="#about">About</a>
             <a href="#contact">Contact</a>
         </nav>
@@ -259,6 +330,49 @@
         <div class="section-heading">
             <h2>Our Products</h2>
             <p>Explore our collection</p>
+        </div>
+
+        <div class="filters">
+            <form action="/products#products" method="GET" class="search-form">
+                @if ($selectedCategory !== '')
+                    <input
+                        type="hidden"
+                        name="category"
+                        value="{{ $selectedCategory }}"
+                    >
+                @endif
+
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ $search }}"
+                    placeholder="Search products..."
+                >
+
+                <button type="submit">Search</button>
+
+                @if ($search !== '' || $selectedCategory !== '')
+                    <a href="/products#products" class="clear-link">Clear</a>
+                @endif
+            </form>
+
+            <div class="chips">
+                <a
+                    href="{{ url('/products') }}{{ $search !== '' ? '?' . http_build_query(['search' => $search]) : '' }}#products"
+                    class="chip {{ $selectedCategory === '' ? 'active' : '' }}"
+                >
+                    All
+                </a>
+
+                @foreach ($categories as $category)
+                    <a
+                        href="{{ url('/products') . '?' . http_build_query(array_filter(['category' => $category, 'search' => $search])) }}#products"
+                        class="chip {{ $selectedCategory === $category ? 'active' : '' }}"
+                    >
+                        {{ $category }}
+                    </a>
+                @endforeach
+            </div>
         </div>
 
         @if ($products->count() > 0)
@@ -305,7 +419,11 @@
             </div>
         @else
             <p class="empty">
-                No products available yet. Please check back soon.
+                @if ($search !== '' || $selectedCategory !== '')
+                    No products found. Try a different keyword or category.
+                @else
+                    No products available yet. Please check back soon.
+                @endif
             </p>
         @endif
     </main>

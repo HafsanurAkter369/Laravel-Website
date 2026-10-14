@@ -10,10 +10,11 @@ Route::get('/', function () {
     $featured = Product::orderBy('id')->take(3)->get();
 
     return view('home', compact('featured'));
-});
+})->name('home');
 
-// All products
-Route::get('/products', [ProductController::class, 'index']);
+// All products / Shop page
+Route::get('/products', [ProductController::class, 'index'])
+    ->name('products.index');
 
 // Product details
 Route::get('/products/{id}', function ($id) {
@@ -22,16 +23,26 @@ Route::get('/products/{id}', function ($id) {
     return view('products.show', compact('product'));
 })->name('products.show');
 
+// About page
+Route::view('/about', 'about')->name('about');
+
+// Contact page
+Route::view('/contact', 'contact')->name('contact');
+
 // Add product to cart
 Route::post('/cart/add/{id}', function (Request $request, $id) {
     $product = Product::findOrFail($id);
 
     $validated = $request->validate([
-        'quantity' => ['required', 'integer', 'min:1', 'max:' . $product->stock],
+        'quantity' => [
+            'required',
+            'integer',
+            'min:1',
+            'max:' . $product->stock,
+        ],
     ]);
 
     $quantity = (int) $validated['quantity'];
-
     $cart = session()->get('cart', []);
 
     $currentQuantity = $cart[$id]['quantity'] ?? 0;
@@ -52,8 +63,11 @@ Route::post('/cart/add/{id}', function (Request $request, $id) {
 
     session()->put('cart', $cart);
 
-    return redirect('/cart')->with('success', 'Product added to cart!');
-});
+    return redirect('/cart')->with(
+        'success',
+        'Product added to cart!'
+    );
+})->name('cart.add');
 
 // Shopping cart page
 Route::get('/cart', function () {
@@ -64,9 +78,9 @@ Route::get('/cart', function () {
     });
 
     return view('cart.index', compact('cart', 'total'));
-});
+})->name('cart.index');
 
-// Update quantity of a product in the cart
+// Update product quantity in cart
 Route::post('/cart/update/{id}', function (Request $request, $id) {
     $cart = session()->get('cart', []);
 
@@ -79,7 +93,12 @@ Route::post('/cart/update/{id}', function (Request $request, $id) {
     $product = Product::findOrFail($id);
 
     $validated = $request->validate([
-        'quantity' => ['required', 'integer', 'min:1', 'max:' . $product->stock],
+        'quantity' => [
+            'required',
+            'integer',
+            'min:1',
+            'max:' . $product->stock,
+        ],
     ]);
 
     $cart[$id]['quantity'] = (int) $validated['quantity'];
@@ -87,9 +106,9 @@ Route::post('/cart/update/{id}', function (Request $request, $id) {
     session()->put('cart', $cart);
 
     return redirect('/cart')->with('success', 'Cart updated!');
-});
+})->name('cart.update');
 
-// Remove a product from the cart
+// Remove product from cart
 Route::post('/cart/remove/{id}', function ($id) {
     $cart = session()->get('cart', []);
 
@@ -97,5 +116,8 @@ Route::post('/cart/remove/{id}', function ($id) {
 
     session()->put('cart', $cart);
 
-    return redirect('/cart')->with('success', 'Product removed from cart.');
-});
+    return redirect('/cart')->with(
+        'success',
+        'Product removed from cart.'
+    );
+})->name('cart.remove');
