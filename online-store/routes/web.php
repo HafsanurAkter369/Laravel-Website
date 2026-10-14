@@ -1,8 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProductController;
+use App\Models\Order;
 use App\Models\Product;
 
 // Home page
@@ -121,3 +123,101 @@ Route::post('/cart/remove/{id}', function ($id) {
         'Product removed from cart.'
     );
 })->name('cart.remove');
+
+// Checkout page
+Route::get('/checkout', function () {
+    $cart = session()->get('cart', []);
+
+    if (empty($cart)) {
+        return redirect('/cart')->withErrors([
+            'cart' => 'Your cart is empty.',
+        ]);
+    }
+
+    $total = collect($cart)->sum(function ($item) {
+        return $item['price'] * $item['quantity'];
+    });
+
+    return view('checkout', compact('cart', 'total'));
+})->name('checkout.index');
+
+// Place the order
+Route::post('/checkout', function (Request $request) {
+    $cart = session()->get('cart', []);
+
+    if (empty($cart)) {
+        return redirect('/cart')->withErrors([
+            'cart' => 'Your cart is empty.',
+        ]);
+    }
+
+    $validated = $request->validate([
+        'customer_name' => ['required', 'string', 'max:255'],
+        'phone' => ['required', 'string', 'max:30'],
+        'address' => ['required', 'string', 'max:1000'],
+    ]);
+
+    // Check price and stock again from the database
+    $lines = [];
+    $total = 0;
+
+    foreach ($cart as $item) {
+        $product = Product::find($item['id']);
+
+        if (!$product) {
+            return redirect('/cart')->withErrors([
+                'cart' => $item['name'] . ' is no longer available.',
+            ]);
+        }
+
+        if ($item['quantity'] > $product->stock) {
+            return redirect('/cart')->withErrors([
+                'cart' => 'Not enough stock for ' . $product->name . '.',
+            ]);
+        }
+
+        $lines[] = [
+            'product' => $product,
+            'quantity' => (int) $item['quantity'],
+        ];
+
+        $total += $product->price * $item['quantity'];
+    }
+
+    $order = DB::transaction(function () use ($validated, $lines, $total) {
+        $order = Order::create([
+            'customer_name' => $validated['customer_name'],
+            'phone' => $validated['phone'],
+            'address' => $validated['address'],
+            'total' => $total,
+            'status' => 'pending',
+        ]);
+
+        foreach ($lines as $line) {
+            $order->items()->create([
+                'product_id' => $line['product']->id,
+                'product_name' => $line['product']->name,
+                'price' => $line['product']->price,
+                'quantity' => $line['quantity'],
+            ]);
+
+            $line['product']->decrement('stock', $line['quantity']);
+        }
+
+        return $order;
+    });
+
+    session()->forget('cart');
+    session()->put('last_order_id', $order->id);
+
+    return redirect('/order/success/' . $order->id);
+})->name('checkout.store');
+
+// Order success page (only for the person who just ordered)
+Route::get('/order/success/{id}', function ($id) {
+    abort_unless((int) session('last_order_id') === (int) $id, 404);
+
+    $order = Order::with('items')->findOrFail($id);
+
+    return view('order-success', compact('order'));
+})->name('order.success');

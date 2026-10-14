@@ -142,6 +142,15 @@
             font-weight: bold;
         }
 
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
         .button {
             display: inline-block;
             margin-top: 20px;
@@ -154,6 +163,14 @@
 
         .button:hover {
             background: #98765b;
+        }
+
+        .checkout-button {
+            background: #98765b;
+        }
+
+        .checkout-button:hover {
+            background: #222;
         }
 
         .empty-cart {
@@ -281,9 +298,17 @@
                 </div>
             @endif
 
-            <a href="/products" class="button">
-                Continue Shopping
-            </a>
+            <div class="actions">
+                <a href="/products" class="button">
+                    Continue Shopping
+                </a>
+
+                @if (count($cart) > 0)
+                    <a href="/checkout" class="button checkout-button">
+                        Proceed to Checkout
+                    </a>
+                @endif
+            </div>
 
         </div>
     </div>
