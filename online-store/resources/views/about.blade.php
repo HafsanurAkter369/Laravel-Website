@@ -1,226 +1,248 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us | Minimalist</title>
+    <title>About | Minimalist</title>
 
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            color: #292929;
-            background: #ffffff;
-            line-height: 1.7;
+            background: #f8f7f4;
+            color: #222;
         }
 
-        .hero {
-            background: #f5f0eb;
-            text-align: center;
-            padding: 75px 20px;
-        }
-
-        .hero p {
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 12px;
-            color: #777;
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            margin: 10px 0;
-        }
-
-        .hero .subtitle {
-            text-transform: none;
-            letter-spacing: normal;
-            font-size: 16px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .container {
-            max-width: 1050px;
-            margin: auto;
-            padding: 55px 22px;
-        }
-
-        .story {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 45px;
-            align-items: center;
-        }
-
-        .story h2,
-        .values h2 {
-            font-size: 30px;
-            margin-top: 0;
-        }
-
-        .story p {
-            color: #666;
-        }
-
-        .image-placeholder {
-            min-height: 300px;
-            background: #f5f0eb;
+        header {
+            background: #fff;
+            padding: 22px 7%;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 25px;
-            color: #777;
-            border-radius: 4px;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        .values {
-            background: #faf8f6;
-            text-align: center;
-            padding: 55px 22px;
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #222;
+            text-decoration: none;
         }
 
-        .value-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            max-width: 1050px;
-            margin: 30px auto 0;
+        nav {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
         }
 
-        .value-card {
-            background: white;
-            padding: 25px 20px;
-            border: 1px solid #eee;
-            border-radius: 5px;
-        }
-
-        .value-card h3 {
-            margin-top: 0;
-        }
-
-        .value-card p {
-            color: #666;
+        nav a {
+            text-decoration: none;
+            color: #333;
             font-size: 14px;
         }
 
-        .closing {
-            text-align: center;
-            padding: 55px 20px;
+        nav a:hover {
+            color: #a16b45;
         }
 
-        .closing a {
+        .page-hero {
+            margin: 30px auto;
+            width: 90%;
+            padding: 60px 30px;
+            background: #e9e3d9;
+            text-align: center;
+            border-radius: 12px;
+        }
+
+        .page-hero p {
+            color: #666;
+            letter-spacing: 2px;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .page-hero h1 {
+            font-size: clamp(28px, 5vw, 44px);
+            margin-bottom: 12px;
+        }
+
+        .page-hero .subtitle {
+            letter-spacing: normal;
+            font-size: 16px;
+            margin-bottom: 0;
+        }
+
+        .section {
+            width: 90%;
+            max-width: 900px;
+            margin: 45px auto;
+        }
+
+        .section h2 {
+            font-size: 26px;
+            margin-bottom: 14px;
+        }
+
+        .section p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .values {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
+            width: 90%;
+            margin: 45px auto;
+        }
+
+        .value {
+            background: white;
+            padding: 28px 22px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            text-align: center;
+        }
+
+        .value h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .value p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .shop-button {
             display: inline-block;
-            padding: 12px 25px;
-            background: #292929;
-            color: white;
+            margin-top: 10px;
+            padding: 13px 28px;
+            background: #222;
+            color: #fff;
             text-decoration: none;
             border-radius: 4px;
-            margin-top: 12px;
         }
 
-        .closing a:hover {
-            background: #555;
+        .shop-button:hover {
+            background: #a16b45;
         }
 
-        @media (max-width: 700px) {
-            .hero h1 {
-                font-size: 32px;
-            }
+        .center {
+            text-align: center;
+        }
 
-            .story,
-            .value-grid {
+        footer {
+            margin-top: 60px;
+            padding: 28px;
+            text-align: center;
+            background: #222;
+            color: white;
+        }
+
+        @media (max-width: 800px) {
+            .values {
                 grid-template-columns: 1fr;
             }
+        }
 
-            .story {
-                gap: 25px;
+        @media (max-width: 520px) {
+            header {
+                padding: 20px 5%;
+            }
+
+            nav {
+                gap: 14px;
+            }
+
+            .page-hero {
+                padding: 40px 20px;
             }
         }
     </style>
 </head>
 
 <body>
+    <header>
+        <a href="/" class="logo">MINIMALIST.</a>
 
-    <section class="hero">
-        <p>Welcome to Minimalist</p>
-        <h1>About Us</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/products">Shop</a>
+            <a href="/cart">Cart</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="page-hero">
+        <p>ABOUT US</p>
+
+        <h1>Simple Products, Honest Prices</h1>
+
         <p class="subtitle">
-            Thoughtfully selected fashion and accessories
-            for your everyday style.
+            Learn a little about who we are and what we believe in.
         </p>
     </section>
 
-    <section class="container">
-        <div class="story">
-            <div>
-                <h2>Our Story</h2>
+    <section class="section">
+        <h2>Our Story</h2>
 
-                <p>
-                    At Minimalist, we believe that personal style
-                    should feel simple, comfortable, and uniquely yours.
-                </p>
+        <p>
+            Minimalist started in Dhaka with a simple idea: everyday products
+            should be well made, easy to choose and fairly priced. We pick a
+            small collection of items you can really use, so you spend less
+            time searching and more time enjoying what you buy.
+        </p>
+    </section>
 
-                <p>
-                    Our store brings together clothing, beauty essentials,
-                    and accessories to help you discover pieces that fit
-                    your everyday life.
-                </p>
+    <section class="section">
+        <h2>Our Mission</h2>
 
-                <p>
-                    We aim to make online shopping easy, enjoyable,
-                    and accessible, with a focus on thoughtful choices
-                    and a pleasant shopping experience.
-                </p>
-            </div>
-
-            <div class="image-placeholder">
-                <p>Your brand or fashion image can go here.</p>
-            </div>
-        </div>
+        <p>
+            We want shopping to feel calm and clear. No clutter, no confusing
+            choices, only useful products with honest descriptions and clear
+            prices in Taka.
+        </p>
     </section>
 
     <section class="values">
-        <h2>What Matters to Us</h2>
+        <div class="value">
+            <h3>Quality First</h3>
+            <p>Every product is chosen with care for everyday use.</p>
+        </div>
 
-        <div class="value-grid">
-            <div class="value-card">
-                <h3>Everyday Style</h3>
-                <p>
-                    Discover clothing and accessories
-                    for different moods and occasions.
-                </p>
-            </div>
+        <div class="value">
+            <h3>Keep It Simple</h3>
+            <p>A clean store that makes browsing and buying easy.</p>
+        </div>
 
-            <div class="value-card">
-                <h3>Simple Shopping</h3>
-                <p>
-                    We want browsing and discovering
-                    your favorite products to feel easy.
-                </p>
-            </div>
-
-            <div class="value-card">
-                <h3>Customer Care</h3>
-                <p>
-                    We value your experience and aim
-                    to make every visit pleasant.
-                </p>
-            </div>
+        <div class="value">
+            <h3>Fair Prices</h3>
+            <p>Clear prices with no hidden surprises.</p>
         </div>
     </section>
 
-    <section class="closing">
-        <h2>Discover Your Style</h2>
-        <p>Explore our collection and find something you love.</p>
-        <a href="/products">Explore Our Products</a>
+    <section class="section center">
+        <a href="/products" class="shop-button">Start Shopping</a>
     </section>
 
+    <footer>
+        <p>MINIMALIST — Your everyday shopping destination.</p>
+
+        <p style="margin-top: 10px;">
+            © {{ date('Y') }} Minimalist. All rights reserved.
+        </p>
+    </footer>
 </body>
 </html>
