@@ -7,7 +7,9 @@ use App\Models\Product;
 
 // Home page
 Route::get('/', function () {
-    return view('welcome');
+    $featured = Product::orderBy('id')->take(3)->get();
+
+    return view('home', compact('featured'));
 });
 
 // All products
