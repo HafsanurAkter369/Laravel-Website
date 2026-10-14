@@ -16,6 +16,7 @@ class ProductSeeder extends Seeder
                 'description' => 'High-quality wireless headphones for everyday use.',
                 'price' => 1250,
                 'stock' => 10,
+                'image' => 'headphones.avif',
             ],
             [
                 'name' => 'Smart Watch',
@@ -23,6 +24,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Track your steps, heart rate and notifications on your wrist.',
                 'price' => 3200,
                 'stock' => 15,
+                'image' => 'smartwatch.avif',
             ],
             [
                 'name' => 'Cotton T-Shirt',
@@ -30,6 +32,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Soft and comfortable cotton t-shirt for daily wear.',
                 'price' => 550,
                 'stock' => 40,
+                'image' => 'tshirt.avif',
             ],
             [
                 'name' => 'Backpack',
@@ -37,6 +40,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Strong and spacious backpack for school, office and travel.',
                 'price' => 1450,
                 'stock' => 20,
+                'image' => 'backpack.avif',
             ],
             [
                 'name' => 'Ceramic Coffee Mug',
@@ -44,11 +48,12 @@ class ProductSeeder extends Seeder
                 'description' => 'A sturdy ceramic mug for your morning tea or coffee.',
                 'price' => 320,
                 'stock' => 30,
+                'image' => 'mug.avif',
             ],
         ];
 
         foreach ($products as $product) {
-            Product::firstOrCreate(
+            Product::updateOrCreate(
                 ['name' => $product['name']],
                 $product
             );
