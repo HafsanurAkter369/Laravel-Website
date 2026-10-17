@@ -32,9 +32,17 @@ class ProductController extends Controller
             ->orderBy('category')
             ->pluck('category');
 
+        // Category cards: category name and how many products it has
+        $categoryCards = Product::select('category')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('category')
+            ->orderBy('category')
+            ->get();
+
         return view('products.index', compact(
             'products',
             'categories',
+            'categoryCards',
             'search',
             'selectedCategory'
         ));

@@ -221,3 +221,14 @@ Route::get('/order/success/{id}', function ($id) {
 
     return view('order-success', compact('order'));
 })->name('order.success');
+// Category page
+Route::get('/category/{category}', function ($category) {
+    $products = \App\Models\Product::whereRaw('LOWER(category) = ?', [strtolower($category)])
+        ->orderBy('id')
+        ->get();
+
+    // Show the category name exactly as saved in the database
+    $category = $products->first()->category ?? $category;
+
+    return view('category', compact('category', 'products'));
+})->name('category.show');

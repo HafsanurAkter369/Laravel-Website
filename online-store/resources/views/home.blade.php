@@ -259,7 +259,7 @@
 
 <body>
     <header>
-        <a href="/" class="logo">MINIMALIST.</a>
+        <a href="/" class="logo">Minimalist</a>
 
         <nav>
             <a href="/">Home</a>
@@ -347,7 +347,7 @@
     </section>
 
     <footer>
-        <p>MINIMALIST — Your everyday shopping destination.</p>
+        <p>Minimalist — Your everyday shopping destination.</p>
 
         <p style="margin-top: 10px;">
             © {{ date('Y') }} Minimalist. All rights reserved.
