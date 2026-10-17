@@ -17,6 +17,8 @@ class OrderForm
                 TextInput::make('phone')
                     ->tel()
                     ->required(),
+                    
+                    
                 Textarea::make('address')
                     ->required()
                     ->columnSpanFull(),

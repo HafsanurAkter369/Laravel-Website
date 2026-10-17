@@ -21,8 +21,10 @@ class OrdersTable
                 TextColumn::make('customer_name')
                     ->label('Customer')
                     ->searchable(),
+
                 TextColumn::make('phone')
                     ->searchable(),
+                
                 TextColumn::make('address')
                     ->limit(30)
                     ->tooltip(fn ($record) => $record->address),

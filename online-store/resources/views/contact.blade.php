@@ -181,17 +181,17 @@
         <div class="cards">
             <div class="card">
                 <h3>Email</h3>
-                <p>hello@minimalist.example</p>
+                <p>minilaistinfo@gmail.com</p>
             </div>
 
             <div class="card">
                 <h3>Phone</h3>
-                <p>+880 1XXX-XXXXXX</p>
+                <p>0122456379</p>
             </div>
 
             <div class="card">
                 <h3>Address</h3>
-                <p>Your store address here</p>
+                <p>North Badda, Dhaka</p>
             </div>
         </div>
 
